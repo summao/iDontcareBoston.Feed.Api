@@ -12,12 +12,12 @@ public class PostService
         col = database.GetCollection<Post>("Posts");
     }
 
-    public async Task<List<Post>> GetPosts()
+    public virtual async Task<List<Post>> GetPosts()
     {
         return await col.Find(_ => true).ToListAsync();
     }
 
-    public async Task AddPost(string message)
+    public virtual async Task AddPost(string message)
     {
         var newPost = new Post
         {

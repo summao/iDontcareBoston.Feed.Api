@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iDontCareBoston.Feed.Api", "iDontCareBoston.Feed.Api\iDontCareBoston.Feed.Api.csproj", "{FFC4B555-86DB-4859-9E47-CC1C62575062}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iDontCareBoston.Feed.Api.Tests", "iDontCareBoston.Feed.Api.Tests\iDontCareBoston.Feed.Api.Tests.csproj", "{4AE7DD3C-1F06-4E3A-8272-A88D199FCD9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{FFC4B555-86DB-4859-9E47-CC1C62575062}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFC4B555-86DB-4859-9E47-CC1C62575062}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFC4B555-86DB-4859-9E47-CC1C62575062}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AE7DD3C-1F06-4E3A-8272-A88D199FCD9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AE7DD3C-1F06-4E3A-8272-A88D199FCD9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AE7DD3C-1F06-4E3A-8272-A88D199FCD9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AE7DD3C-1F06-4E3A-8272-A88D199FCD9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
