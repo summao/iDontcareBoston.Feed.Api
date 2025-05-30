@@ -1,5 +1,3 @@
-using System.CodeDom.Compiler;
-using iDontCareBoston.Feed.Api.Entities;
 using iDontCareBoston.Feed.Api.Models;
 using iDontCareBoston.Feed.Api.Services;
 using Microsoft.AspNetCore.Mvc;

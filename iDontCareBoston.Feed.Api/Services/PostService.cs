@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using iDontCareBoston.Feed.Api.Entities;
 using MongoDB.Driver;
 
