@@ -12,9 +12,19 @@ public class PostService
         col = database.GetCollection<Post>("Posts");
     }
 
-    public virtual async Task<List<Post>> GetPosts()
+    public virtual async Task<List<Post>> GetPosts(int skip = 0, int limit = 10, bool isAscending = false)
     {
-        return await col.Find(_ => true).ToListAsync();
+        var find = col.Find(_ => true);
+        if (isAscending)
+        {
+            find.SortBy(a => a.CreatedDateTime);
+        }
+        else
+        {
+            find.SortByDescending(a => a.CreatedDateTime);
+            
+        }
+        return await find.Skip(skip).Limit(limit).ToListAsync();
     }
 
     public virtual async Task AddPost(string message)
