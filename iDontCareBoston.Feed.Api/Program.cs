@@ -1,3 +1,5 @@
+using iDontCareBoston.Feed.Api;
+using iDontCareBoston.Feed.Api.Repositories;
 using iDontCareBoston.Feed.Api.Services;
 using MongoDB.Driver;
 
@@ -8,9 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<IMongoClient>(a =>
-    new MongoClient("mongodb://mongo:mongo@127.0.0.1:27018/admin?retryWrites=true&loadBalanced=false&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-1")
+    new MongoClient("mongodb://admin:secret@localhost:27017/admin?retryWrites=true&loadBalanced=false&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-1")
 );
 builder.Services.AddScoped<PostService>();
+builder.Services.AddScoped<PostRepository>();
+builder.Services.AddScoped<MongoDbContext>();
+builder.Services.AddSingleton(TimeProvider.System);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

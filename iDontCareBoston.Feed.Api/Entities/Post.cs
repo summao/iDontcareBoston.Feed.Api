@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -10,7 +11,16 @@ public class Post
     public string? Id { get; set; }
     public required string Message { get; set; }
     public required Author Author { get; set; }
-    public required DateTime CreatedDateTime { get; set; }
+    public required DateTimeOffset CreatedDateTime { get; set; }
+
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public required PostVisibility Visibility { get; set; }
+}
+
+public enum PostVisibility
+{
+    Public,
+    Private
 }
 
 public class Author
