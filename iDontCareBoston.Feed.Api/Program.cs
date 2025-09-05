@@ -5,12 +5,10 @@ using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// builder.Services.Configure<FeedDatabaseSetting>(
-// builder.Configuration.GetSection("FeedDatabase"));
 
-// Add services to the container.
+string connectionString = builder.Configuration["FeedDatabase:ConnectionString"] ?? throw new Exception("FeedDatabase:ConnectionString does not set");
 builder.Services.AddSingleton<IMongoClient>(a =>
-    new MongoClient("mongodb://admin:secret@localhost:27017/admin?retryWrites=true&loadBalanced=false&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-1")
+    new MongoClient(connectionString)
 );
 builder.Services.AddScoped<PostService>();
 builder.Services.AddScoped<PostRepository>();
@@ -18,23 +16,17 @@ builder.Services.AddScoped<MongoDbContext>();
 builder.Services.AddSingleton(TimeProvider.System);
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
