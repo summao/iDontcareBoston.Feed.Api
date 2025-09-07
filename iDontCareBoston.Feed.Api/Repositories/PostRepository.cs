@@ -3,17 +3,17 @@ using MongoDB.Driver;
 
 namespace iDontCareBoston.Feed.Api.Repositories;
 
-// public interface IPostRepository
-// {
-//     Task<List<Post>> Get(int skip = 0, int limit = 10, bool isAscending = false);
-//     Task Add(Post post);
-// }
+public interface IPostRepository
+{
+    Task<List<Post>> GetMany(int skip = 0, int limit = 10, bool isAscending = false);
+    Task Add(Post post);
+}
 
-public class PostRepository(MongoDbContext context)
+public class PostRepository(MongoDbContext context) : IPostRepository
 {
     private readonly IMongoCollection<Post> _posts = context.Posts;
 
-    public virtual async Task<List<Post>> Get(int skip = 0, int limit = 10, bool isAscending = false)
+    public virtual async Task<List<Post>> GetMany(int skip = 0, int limit = 10, bool isAscending = false)
     {
         var find = _posts.Find(_ => true);
         if (isAscending)

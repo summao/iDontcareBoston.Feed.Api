@@ -10,8 +10,8 @@ string connectionString = builder.Configuration["FeedDatabase:ConnectionString"]
 builder.Services.AddSingleton<IMongoClient>(a =>
     new MongoClient(connectionString)
 );
-builder.Services.AddScoped<PostService>();
-builder.Services.AddScoped<PostRepository>();
+builder.Services.AddScoped<IPostService,PostService>();
+builder.Services.AddScoped<IPostRepository,PostRepository>();
 builder.Services.AddScoped<MongoDbContext>();
 builder.Services.AddSingleton(TimeProvider.System);
 

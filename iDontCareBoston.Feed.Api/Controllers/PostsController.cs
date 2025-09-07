@@ -7,14 +7,14 @@ namespace iDontCareBoston.Feed.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class PostsController(PostService _postService) : ControllerBase
+public class PostsController(IPostService _postService) : ControllerBase
 {
-    // [HttpGet]
-    // public async Task<IActionResult> GetPosts()
-    // {
-    //     var result = await _postService.GetPosts();
-    //     return Ok(result);
-    // }
+    [HttpGet]
+    public async Task<IActionResult> GetPosts()
+    {
+        var result = await _postService.GetPosts(0 , 20, false);
+        return Ok(result);
+    }
 
     [HttpPost]
     public async Task<IActionResult> AddPost(AddPostRequest addPostRequest)

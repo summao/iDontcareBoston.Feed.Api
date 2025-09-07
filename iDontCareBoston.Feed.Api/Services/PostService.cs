@@ -3,23 +3,19 @@ using iDontCareBoston.Feed.Api.Repositories;
 
 namespace iDontCareBoston.Feed.Api.Services;
 
-public class PostService(PostRepository _postRepository, TimeProvider _timeProvider)
+public interface IPostService
+{
+    Task<List<Post>> GetPosts(int skip = 0, int limit = 10, bool isAscending = false);
+    Task AddPost(string message, PostVisibility postVisibility);
+}
+
+public class PostService(IPostRepository _postRepository, TimeProvider _timeProvider) : IPostService
 {
 
-    // public virtual async Task<List<Post>> GetPosts(int skip = 0, int limit = 10, bool isAscending = false)
-    // {
-    //     var find = _posts.Find(_ => true);
-    //     if (isAscending)
-    //     {
-    //         find.SortBy(a => a.CreatedDateTime);
-    //     }
-    //     else
-    //     {
-    //         find.SortByDescending(a => a.CreatedDateTime);
-
-    //     }
-    //     return await find.Skip(skip).Limit(limit).ToListAsync();
-    // }
+    public virtual async Task<List<Post>> GetPosts(int skip = 0, int limit = 10, bool isAscending = false)
+    {
+        return await _postRepository.GetMany(skip, limit, isAscending);
+    }
 
     public virtual async Task AddPost(string message, PostVisibility postVisibility)
     {

@@ -9,7 +9,7 @@ public class PostServiceTests
 {
     private readonly PostService _postService;
 
-    private readonly Mock<PostRepository> _mockPostRepository;
+    private readonly Mock<IPostRepository> _mockPostRepository;
     private readonly Mock<TimeProvider> _mockTimeProvider;
 
     public PostServiceTests()
@@ -20,64 +20,21 @@ public class PostServiceTests
         _postService = new PostService(_mockPostRepository.Object, _mockTimeProvider.Object);
     }
 
-    // [Fact]
-    // public async Task GetPosts_WhenNoPostsExist_ReturnsEmptyList()
-    // {
-    //     // Arrange
-    //     var emptyPostsCursor = new Mock<IAsyncCursor<Post>>();
-    //     emptyPostsCursor.Setup(_ => _.Current).Returns(new List<Post>());
-    //     emptyPostsCursor
-    //         .SetupSequence(_ => _.MoveNextAsync(It.IsAny<CancellationToken>()))
-    //         .ReturnsAsync(true)
-    //         .ReturnsAsync(false);
+    #region GetPosts
+    [Fact]
+    public async Task GetPosts_CallRepo()
+    {
+        // Arrange
 
-    //     _mockPostCollection.Setup(col => col.FindAsync(
-    //         It.IsAny<FilterDefinition<Post>>(),
-    //         It.IsAny<FindOptions<Post, Post>>(),
-    //         It.IsAny<CancellationToken>()
-    //     )).ReturnsAsync(emptyPostsCursor.Object);
+        // Act
+        await _postService.GetPosts();
 
-    //     // Act
-    //     var result = await _postService.GetPosts();
+        // Assert
+        _mockPostRepository.Verify(a => a.GetMany(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()));
+    }
+    #endregion
 
-    //     // Assert
-    //     Assert.NotNull(result);
-    //     Assert.Empty(result);
-    // }
-
-    // [Fact]
-    // public async Task GetPosts_WhenPostsExist_ReturnsListOfPosts()
-    // {
-    //     // Arrange
-    //     var expectedPosts = new List<Post>
-    //         {
-    //             new() { Id = "1", Message = "Test Post 1", CreatedDateTime = System.DateTime.UtcNow, Author = new Author { Username = "user1", DisplayName = "User One", ProfileImagePath = "path/to/image1.jpg" }, Visibility = PostVisibility.Private },
-    //             new() { Id = "2", Message = "Test Post 2", CreatedDateTime = System.DateTime.UtcNow, Author = new Author { Username = "user2", DisplayName = "User Two", ProfileImagePath = "path/to/image2.jpg" }, Visibility = PostVisibility.Private }
-    //         };
-
-    //     var mockCursor = new Mock<IAsyncCursor<Post>>();
-    //     mockCursor.Setup(_ => _.Current).Returns(expectedPosts);
-    //     mockCursor
-    //         .SetupSequence(_ => _.MoveNextAsync(It.IsAny<CancellationToken>()))
-    //         .ReturnsAsync(true)
-    //         .ReturnsAsync(false);
-
-    //     _mockPostCollection.Setup(col => col.FindAsync(
-    //         It.IsAny<FilterDefinition<Post>>(),
-    //         It.IsAny<FindOptions<Post, Post>>(),
-    //         It.IsAny<CancellationToken>()
-    //     )).ReturnsAsync(mockCursor.Object);
-
-    //     // Act
-    //     var result = await _postService.GetPosts();
-
-    //     // Assert
-    //     Assert.NotNull(result);
-    //     Assert.Equal(expectedPosts.Count, result.Count);
-    //     Assert.Equal(expectedPosts[0].Message, result[0].Message);
-    //     Assert.Equal(expectedPosts[1].Message, result[1].Message);
-    // }
-
+    #region AddPost
     [Fact]
     public async Task AddPost_ShouldCallRepositoryAdd_WithCorrectPost()
     {
@@ -107,4 +64,5 @@ public class PostServiceTests
         Assert.Equal("", capturedPost.Author.ProfileImagePath);
         Assert.Equal(now, capturedPost.CreatedDateTime);
     }
+    #endregion
 }
