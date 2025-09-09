@@ -2,6 +2,8 @@ using Moq;
 using iDontCareBoston.Feed.Api.Services;
 using iDontCareBoston.Feed.Api.Entities;
 using iDontCareBoston.Feed.Api.Repositories;
+using FluentAssertions;
+
 
 namespace iDontCareBoston.Feed.Api.Tests.Services;
 
@@ -22,15 +24,50 @@ public class PostServiceTests
 
     #region GetPosts
     [Fact]
-    public async Task GetPosts_CallRepo()
+    public async Task GetPosts_CanMapCorrectly()
     {
         // Arrange
+        var now = DateTimeOffset.Now;
+        var posts = new List<Post>
+        {
+            new() {
+                // Id = "111",
+                Message = "Message",
+                Author = new Author
+                {
+                    Username = "Username",
+                    DisplayName = "DisplayName",
+                    ProfileImagePath = "ProfileImagePath",
+                },
+                CreatedDateTime = now,
+                Visibility = PostVisibility.Private,
+            }
+        };
+        _mockPostRepository.Setup(a => a.GetMany(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
+            .ReturnsAsync(posts);
 
         // Act
-        await _postService.GetPosts();
+        var result = await _postService.GetPosts();
 
         // Assert
         _mockPostRepository.Verify(a => a.GetMany(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()));
+        var expected = new List<PostDto>
+        {
+            new()
+            {
+                Id = "",
+                Message = "Message",
+                Author = new Author
+                {
+                    Username = "Username",
+                    DisplayName = "DisplayName",
+                    ProfileImagePath = "ProfileImagePath",
+                },
+                CreatedDateTime = now,
+                Visibility = "Private",
+            }
+        };
+        result.Should().BeEquivalentTo(expected);
     }
     #endregion
 

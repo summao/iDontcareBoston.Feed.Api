@@ -5,16 +5,25 @@ namespace iDontCareBoston.Feed.Api.Services;
 
 public interface IPostService
 {
-    Task<List<Post>> GetPosts(int skip = 0, int limit = 10, bool isAscending = false);
+    Task<List<PostDto>> GetPosts(int skip = 0, int limit = 10, bool isAscending = false);
     Task AddPost(string message, PostVisibility postVisibility);
 }
 
 public class PostService(IPostRepository _postRepository, TimeProvider _timeProvider) : IPostService
 {
 
-    public virtual async Task<List<Post>> GetPosts(int skip = 0, int limit = 10, bool isAscending = false)
+    public virtual async Task<List<PostDto>> GetPosts(int skip = 0, int limit = 10, bool isAscending = false)
     {
-        return await _postRepository.GetMany(skip, limit, isAscending);
+        var posts = await _postRepository.GetMany(skip, limit, isAscending);
+        var postDtos = posts.Select(a => new PostDto
+        {
+            Id = a.Id ?? "",
+            Message = a.Message,
+            Visibility = a.Visibility.ToString(),
+            CreatedDateTime = a.CreatedDateTime,
+            Author = a.Author,
+        });
+        return postDtos.ToList();
     }
 
     public virtual async Task AddPost(string message, PostVisibility postVisibility)
